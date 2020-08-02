@@ -144,7 +144,7 @@ class Unibot(commands.Cog):
         # No data from studierenwerk
         if not data:
             reply = await ctx.send("Keine Daten vom Studierenwerk bekommen {}".format(":persevere:"))
-            return await reply.add_reaction(":persevere:")
+            return await reply.add_reaction("😵")
 
         # Needed later
         wochentage = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
