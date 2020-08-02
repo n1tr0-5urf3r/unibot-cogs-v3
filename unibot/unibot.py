@@ -121,7 +121,7 @@ class Unibot(commands.Cog):
                 mensa_id = "665"  # Nuertingen
                 heute_flag = True
             else:
-                return await self.bot.say("""```
+                return await ctx.send("""```
         Mensa:
             help         Diese Nachricht
             <leer>       Speiseplan der aktuellen Woche
@@ -141,10 +141,10 @@ class Unibot(commands.Cog):
 
         # No data from studierenwerk
         if not data:
-            emoji_woah = get(self.bot.get_all_emojis(), name="woah")
-            emoji_bad = get(self.bot.get_all_emojis(), name="eelsbadman")
-            reply = await self.bot.say("Keine Daten vom Studierenwerk bekommen {}".format(emoji_bad))
-            return await self.bot.add_reaction(reply, emoji_woah)
+            emoji_woah = get(ctx.get_all_emojis(), name="woah")
+            emoji_bad = get(ctx.get_all_emojis(), name="eelsbadman")
+            reply = await ctx.send("Keine Daten vom Studierenwerk bekommen {}".format(emoji_bad))
+            return await ctx.add_reaction(reply, emoji_woah)
 
         # Needed later
         wochentage = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
@@ -203,4 +203,4 @@ class Unibot(commands.Cog):
         embed.set_thumbnail(
             url='https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Studentenwerk_T%C3%BCbingen-Hohenheim_logo.svg/220px-Studentenwerk_T%C3%BCbingen-Hohenheim_logo.svg.png')
         embed.set_footer(text='Bot by Fabi / N1tR0#0914')
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
