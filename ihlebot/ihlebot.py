@@ -64,7 +64,7 @@ class Ihlebot(commands.Cog):
 
 
     @commands.command(pass_context=True)
-    async def ping(self, ctx, ip):
+    async def pinghost(self, ctx, ip):
         """Check if Server is online"""
 
         # Check for valid IP else do DNS lookup

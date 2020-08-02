@@ -3,6 +3,7 @@ import datetime
 import requests
 import re
 from discord.utils import get
+import discord
 
 class Unibot(commands.Cog):
 
