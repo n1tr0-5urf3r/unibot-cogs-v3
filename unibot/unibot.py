@@ -141,10 +141,10 @@ class Unibot(commands.Cog):
 
         # No data from studierenwerk
         if not data:
-            emoji_woah = get(ctx.get_all_emojis(), name="woah")
-            emoji_bad = get(ctx.get_all_emojis(), name="eelsbadman")
+            emoji_woah = await ctx.get_emoji(739577350152388608)
+            emoji_bad = await ctx.get_emoji(739577299204309073)
             reply = await ctx.send("Keine Daten vom Studierenwerk bekommen {}".format(emoji_bad))
-            return await ctx.add_reaction(reply, emoji_woah)
+            return await reply.add_reaction(emoji_woah)
 
         # Needed later
         wochentage = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
