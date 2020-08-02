@@ -5,6 +5,8 @@ import re
 from discord.utils import get
 import discord
 
+client = discord.Client()
+
 class Unibot(commands.Cog):
 
     @commands.command(pass_context=True, aliases=["Mensa"])
@@ -141,8 +143,8 @@ class Unibot(commands.Cog):
 
         # No data from studierenwerk
         if not data:
-            emoji_woah = await ctx.get_emoji(739577350152388608)
-            emoji_bad = await ctx.get_emoji(739577299204309073)
+            emoji_woah = await client.get_emoji(739577350152388608)
+            emoji_bad = await client.get_emoji(739577299204309073)
             reply = await ctx.send("Keine Daten vom Studierenwerk bekommen {}".format(emoji_bad))
             return await reply.add_reaction(emoji_woah)
 
