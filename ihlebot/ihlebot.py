@@ -603,8 +603,3 @@ class Ihlebot(commands.Cog):
     #     else:
     #         embed.add_field(name=group_info, value="Niemand")
     #     return await self.bot.say(embed=embed)
-
-def setup(bot):
-    n = Ihlebot(bot)
-    loop = asyncio.get_event_loop()
-    bot.add_cog(n)
