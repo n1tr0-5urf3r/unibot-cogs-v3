@@ -77,10 +77,10 @@ class Ihlebot(commands.Cog):
         elif valid_hostname.match(ip):
             valid = True
             try:
-                await self.bot.say('Doing DNS lookup...')
+                await ctx.send('Doing DNS lookup...')
                 ip = socket.gethostbyname(ip)
             except socket.gaierror:
-                return await self.bot.say('Whoops! That Address cant be resolved!')
+                return await ctx.send('Whoops! That Address cant be resolved!')
 
         if valid == True:
             start = time.time()
@@ -88,12 +88,12 @@ class Ihlebot(commands.Cog):
             duration = time.time() - start
             duration = round(duration * 1000, 0)
             if response == 0:
-                await self.bot.say(ip + ' is up and responding in ' +
+                await ctx.send(ip + ' is up and responding in ' +
                                    str(duration) + 'ms.')
             else:
-                await self.bot.say(ip + ' is not reachable.')
+                await ctx.send(ip + ' is not reachable.')
         else:
-            await self.bot.say(ip + ' is not a valid IP or Domain.')
+            await ctx.send(ip + ' is not a valid IP or Domain.')
 
     @commands.command(pass_context=True)
     async def pr0(self, ctx):
