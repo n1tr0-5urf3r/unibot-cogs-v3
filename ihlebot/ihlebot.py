@@ -49,18 +49,18 @@ class Ihlebot(commands.Cog):
         ]
 
         rng = random.randint(0, len(pizza_list))
-        await self.bot.say(pizza_list[rng])
+        await ctx.send(pizza_list[rng])
 
     @commands.command(pass_context=True)
     async def emojis(self, ctx):
         """Returns a list of all Server Emojis"""
         server = ctx.message.server
-        await self.bot.say('This may take some time, generating list...')
+        await ctx.send('This may take some time, generating list...')
         data = discord.Embed(description="Emojilist")
         for ej in server.emojis:
             data.add_field(
                 name=ej.name, value=str(ej) + " " + ej.id, inline=False)
-        await self.bot.say(embed=data)
+        await ctx.send(embed=data)
 
 
     @commands.command(pass_context=True)
@@ -122,8 +122,8 @@ class Ihlebot(commands.Cog):
             name="Score",
             value="{0} :arrow_up: {1} :arrow_down:".format(upvotes, downvotes))
 
-        await self.bot.say(embed=embed)
-        await self.bot.say("https://img.pr0gramm.com/{}".format(item))
+        await ctx.send(embed=embed)
+        await ctx.send("https://img.pr0gramm.com/{}".format(item))
 
     @commands.command(pass_context=True, aliases=["cf"])
     async def coinflip(self, ctx, *, param=None):
@@ -132,16 +132,16 @@ class Ihlebot(commands.Cog):
         if param is None:
             rng = randint(1, 10)
             if rng <= 5:
-                return await self.bot.say("Kopf gewinnt!")
+                return await ctx.send("Kopf gewinnt!")
             else:
-                return await self.bot.say("Zahl gewinnt!")
+                return await ctx.send("Zahl gewinnt!")
         else:
             choices = []
             for word in param.split(' '):
                 choices.append(word)
             length = len(choices)
             rng = randint(0,length-1)
-            return await self.bot.say("**{}** hat gewonnen!".format(choices[rng]))
+            return await ctx.send("**{}** hat gewonnen!".format(choices[rng]))
 
     def getColor(self, user):
         try:
@@ -171,7 +171,7 @@ class Ihlebot(commands.Cog):
                 description="Usage: !ascii <fontname> <text>\nFont defaults to slant.\nAvailable fonts:")
             for chunk in fonts_chunks:
                 embed.add_field(name="-", value="``{}``".format(chunk))
-            return await self.bot.say(embed=embed)
+            return await ctx.send(embed=embed)
         else:
             if attr.lower() in fonts:
                 f = Figlet(font=attr.lower())
@@ -184,9 +184,9 @@ class Ihlebot(commands.Cog):
                 text = param
             asciistring = f.renderText(text)
             try:
-                return await self.bot.say("```{}```".format(asciistring))
+                return await ctx.send("```{}```".format(asciistring))
             except discord.errors.HTTPException:
-                return await self.bot.say("Message too long")
+                return await ctx.send("Message too long")
 
     @commands.command(pass_context=True)
     @commands.check(user_is_me)
@@ -195,7 +195,7 @@ class Ihlebot(commands.Cog):
         emojis = []
         for ej in server.emojis:
             emojis.append(ej)
-            await self.bot.say(ej.url)
+            await ctx.send(ej.url)
 
     @commands.command(pass_context=True)
     async def w(self, ctx, s1, s2=None, s3=None, s4=None):
@@ -209,15 +209,11 @@ class Ihlebot(commands.Cog):
         :return:
         """
         if s4 or not s3 or not s2:
-            return await self.bot.say("Denke dran nur 3 Antworten zu geben und diese mit \"\" abzutrennen.")
-        reply = await self.bot.say(":one: {}\n:two: {}\n:three: {}".format(s1, s2, s3))
+            return await ctx.send("Denke dran nur 3 Antworten zu geben und diese mit \"\" abzutrennen.")
+        reply = await ctx.send(":one: {}\n:two: {}\n:three: {}".format(s1, s2, s3))
         emojis = ['1\N{combining enclosing keycap}', '2\N{combining enclosing keycap}', '3\N{combining enclosing keycap}']
         for emoji in emojis:
-            await self.bot.add_reaction(reply, emoji)
-
-
-
-
+            await ctx.send(reply, emoji)
 
     # @commands.command(pass_context=True)
     # @commands.has_role("Administrator")
