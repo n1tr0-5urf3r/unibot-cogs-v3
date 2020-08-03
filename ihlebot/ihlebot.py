@@ -231,7 +231,7 @@ class Ihlebot(commands.Cog):
     async def sendchannel(self, ctx, channelId, message):
         """Sends a message to the specified channel identified by its ID"""
         channel = ctx.bot.get_channel(int(channelId))
-        if ctx.author.id == "240799236113956864":
+        if ctx.author.id == 240799236113956864:
             if channel:
                 try:
                     await channel.send(message)
