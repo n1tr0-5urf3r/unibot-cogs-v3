@@ -227,6 +227,14 @@ class Ihlebot(commands.Cog):
     #         except AttributeError:
     #             await self.bot.say("Fehler")
 
+
+    @commands.command(pass_context=True)
+    @commands.check(user_is_me)
+    async def send(self, ctx, channelId, message):
+        """Sends a message to the specified channel identified by its ID"""
+        channel = client.get_channel(channelId)
+        await channel.send(message)
+
 # @commands.command(pass_context=True)
     # @commands.has_role("Administrator")
     # async def createroles(self, ctx):
