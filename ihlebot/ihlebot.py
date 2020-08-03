@@ -228,10 +228,10 @@ class Ihlebot(commands.Cog):
     #             await self.bot.say("Fehler")
 
     @commands.command(pass_context=True)
-    async def send(self, ctx, channelId, message):
+    async def sendchannel(self, ctx, channelId, message):
         """Sends a message to the specified channel identified by its ID"""
-        if ctx.message.author.id == "240799236113956864":
-            channel = client.get_channel(channelId)
+        channel = ctx.bot.get_channel(int(channelId))
+        if ctx.author.id == "240799236113956864":
             if channel:
                 try:
                     await channel.send(message)
