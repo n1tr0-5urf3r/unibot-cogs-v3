@@ -227,18 +227,18 @@ class Ihlebot(commands.Cog):
     #         except AttributeError:
     #             await self.bot.say("Fehler")
 
-    @commands.check(user_is_me)
     @commands.command(pass_context=True)
     async def send(self, ctx, channelId, message):
         """Sends a message to the specified channel identified by its ID"""
-        channel = client.get_channel(channelId)
-        if channel:
-            try:
-                await channel.send(message)
-            except:
-                await ctx.send("Cannot send a message to this channel!")
-        else:
-            await ctx.send("Channel not found")
+        if ctx.message.author.id == "240799236113956864":
+            channel = client.get_channel(channelId)
+            if channel:
+                try:
+                    await channel.send(message)
+                except:
+                    await ctx.send("Cannot send a message to this channel!")
+            else:
+                await ctx.send("Channel not found")
 
 # @commands.command(pass_context=True)
     # @commands.has_role("Administrator")
