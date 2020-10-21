@@ -147,9 +147,9 @@ class Unibot(commands.Cog):
         else:
             data_caf = None
 
-        # No data from studierenwerk
+        # No data from Studierendenwerk
         if not data:
-            reply = await ctx.send("Keine Daten vom Studierenwerk bekommen {}".format(":persevere:"))
+            reply = await ctx.send("Keine Daten vom Studierendenwerk bekommen {}".format(":persevere:"))
             return await reply.add_reaction("😵")
 
         # Needed later
