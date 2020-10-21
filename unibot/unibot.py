@@ -117,6 +117,11 @@ class Unibot(commands.Cog):
                 week_end = week_start + datetime.timedelta(days=4)
             elif subcommand.lower() == "heute":
                 heute_flag = True
+            elif subcommand.lower() == "sh" or subcommand.lower() == "shedhalle":
+                mensa_id = "611"
+            elif subcommand.lower() == "shheute":
+                mensa_id = "611"
+                heute_flag = True
             elif subcommand.lower() == "nt":
                 mensa_id = "665"  # Nuertingen
             elif subcommand.lower() == "ntheute": # This is ugly
@@ -130,6 +135,7 @@ class Unibot(commands.Cog):
             nextweek     Speiseplan der nächsten Woche
             heute        Speiseplan von heute
             nt           Speiseplan in Nürtingen
+            sh           Speiseplan in Mensa Shedhalle
 
             z.B. !mensa oder !mensa nextweek
             Alternativ auch Abkürzungen wie "h" oder "nw"
