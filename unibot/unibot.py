@@ -107,26 +107,44 @@ class Unibot(commands.Cog):
                      "mensaVital": ":apple: mensaVital",
                      "Cafeteria": ":coffee: Cafeteria",
                      "Angebot des Tages": ":dollar: Angebot des Tages"}
-        if subcommand:
-            if subcommand.lower() == "nextweek" or subcommand.lower() == "nw":
-                cal_week = int(cal_week) + 1
 
+        if subcommand:
+            subcommands = subcommand.split(" ")
+
+            if subcommands[0].lower() == "nextweek" or subcommand[0].lower() == "nw":
+                # Defaults to nw for Mensa Morgenstelle
+                cal_week = int(cal_week) + 1
                 today = next_weekday(today, 0)
                 weekday = 0
                 week_start = today
                 week_end = week_start + datetime.timedelta(days=4)
-            elif subcommand.lower() == "heute":
+            elif subcommand[0].lower() == "heute":
+                # Defaults to heute for Mensa Morgenstelle
                 heute_flag = True
-            elif subcommand.lower() == "sh" or subcommand.lower() == "shedhalle":
+            elif subcommand[0].lower() == "sh" or subcommand.lower() == "shedhalle":
+                # Mensa shedhalle
                 mensa_id = "611"
-            elif subcommand.lower() == "shheute":
-                mensa_id = "611"
-                heute_flag = True
-            elif subcommand.lower() == "nt":
+                if len(subcommands) > 1 and subcommand[1].lower() == "heute":
+                    heute_flag = True
+                elif len(subcommands) > 1 and (subcommand[1].lower() == "nextweek" or subcommand[1].lower() == "nw"):
+                    # TODO fix this copy paste someday
+                    cal_week = int(cal_week) + 1
+                    today = next_weekday(today, 0)
+                    weekday = 0
+                    week_start = today
+                    week_end = week_start + datetime.timedelta(days=4)
+            elif subcommand[0].lower() == "nt":
+                # Mensa Nuertingen
                 mensa_id = "665"  # Nuertingen
-            elif subcommand.lower() == "ntheute": # This is ugly
-                mensa_id = "665"  # Nuertingen
-                heute_flag = True
+                if len(subcommands) > 1 and subcommand[1].lower() == "heute":
+                    heute_flag = True
+                elif len(subcommands) > 1 and (subcommand[1].lower() == "nextweek" or subcommand[1].lower() == "nw"):
+                    # TODO fix this copy paste someday
+                    cal_week = int(cal_week) + 1
+                    today = next_weekday(today, 0)
+                    weekday = 0
+                    week_start = today
+                    week_end = week_start + datetime.timedelta(days=4)
             else:
                 return await ctx.send("""```
         Mensa:
@@ -136,8 +154,10 @@ class Unibot(commands.Cog):
             heute        Speiseplan von heute
             nt           Speiseplan in Nürtingen
             sh           Speiseplan in Mensa Shedhalle
+            sh heute     Heutiger Speiseplan der Mensa Shedhalle
+            sh nw        Speiseplan nächste Woche in der Mensa Shedhalle
 
-            z.B. !mensa oder !mensa nextweek
+            z.B. !mensa oder !mensa nextweek oder !mensa sh heute
             Alternativ auch Abkürzungen wie "h" oder "nw"
         ```""")
 
