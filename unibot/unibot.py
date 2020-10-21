@@ -7,10 +7,11 @@ import discord
 
 client = discord.Client()
 
+
 class Unibot(commands.Cog):
 
     @commands.command(pass_context=True, aliases=["Mensa"])
-    async def mensa(self, ctx, subcommand=None):
+    async def mensa(self, ctx, *, subcommand=None):
 
         def embed_list_lines(embed,
                              lines,
@@ -29,9 +30,11 @@ class Unibot(commands.Cog):
                     value += line + "\n"
                 if value:
                     values.append(value)
-                embed.add_field(name=field_name, value=values[0], inline=inline)
+                embed.add_field(name=field_name,
+                                value=values[0], inline=inline)
                 for v in values[1:]:
-                    embed.add_field(name=zero_width_space, value=v, inline=inline)
+                    embed.add_field(name=zero_width_space,
+                                    value=v, inline=inline)
             else:
                 embed.add_field(name=field_name, value=value, inline=inline)
             return embed
@@ -44,7 +47,8 @@ class Unibot(commands.Cog):
 
         def get_data(id):
             # Get data
-            url_mensa = "https://www.my-stuwe.de/wp-json/mealplans/v1/canteens/{}?lang=de".format(id)
+            url_mensa = "https://www.my-stuwe.de/wp-json/mealplans/v1/canteens/{}?lang=de".format(
+                id)
             r = requests.get(url_mensa)
             r.encoding = 'utf-8-sig'
             data = r.json()
@@ -75,7 +79,8 @@ class Unibot(commands.Cog):
                         if not menu:
                             continue
                         # menu is fully available, build string
-                        menu_cur_day.append(["*{} - {}€*".format(menuLine, price)])
+                        menu_cur_day.append(
+                            ["*{} - {}€*".format(menuLine, price)])
                         menu_cur_day.append(menu)
                         # Reset menu
                         menu = []
@@ -90,7 +95,7 @@ class Unibot(commands.Cog):
         heute_flag = False
 
         color = discord.Colour.magenta()
-        mensa_id = "621" # Tuebingen Morgenstelle
+        mensa_id = "621"  # Tuebingen Morgenstelle
         caf_id = "724"
         emoji_map = {"[S]": "[ :pig2: ]",
                      "[R]": "[ :cow2: ]",
@@ -110,56 +115,31 @@ class Unibot(commands.Cog):
 
         if subcommand:
             subcommands = subcommand.split(" ")
-
-            if subcommands[0].lower() == "nextweek" or subcommand[0].lower() == "nw":
-                # Defaults to nw for Mensa Morgenstelle
+            subcommands = [s.lower() for s in subcommands]
+            if "nw" in subcommands or "nextweek" in subcommands:
                 cal_week = int(cal_week) + 1
                 today = next_weekday(today, 0)
                 weekday = 0
                 week_start = today
                 week_end = week_start + datetime.timedelta(days=4)
-            elif subcommand[0].lower() == "heute":
-                # Defaults to heute for Mensa Morgenstelle
+            elif "heute" in subcommands:
                 heute_flag = True
-            elif subcommand[0].lower() == "sh" or subcommand.lower() == "shedhalle":
+            if "sh" in subcommands or "shedhalle" in subcommands:
                 # Mensa shedhalle
                 mensa_id = "611"
-                if len(subcommands) > 1 and subcommand[1].lower() == "heute":
-                    heute_flag = True
-                elif len(subcommands) > 1 and (subcommand[1].lower() == "nextweek" or subcommand[1].lower() == "nw"):
-                    # TODO fix this copy paste someday
-                    cal_week = int(cal_week) + 1
-                    today = next_weekday(today, 0)
-                    weekday = 0
-                    week_start = today
-                    week_end = week_start + datetime.timedelta(days=4)
-            elif subcommand[0].lower() == "nt":
-                # Mensa Nuertingen
-                mensa_id = "665"  # Nuertingen
-                if len(subcommands) > 1 and subcommand[1].lower() == "heute":
-                    heute_flag = True
-                elif len(subcommands) > 1 and (subcommand[1].lower() == "nextweek" or subcommand[1].lower() == "nw"):
-                    # TODO fix this copy paste someday
-                    cal_week = int(cal_week) + 1
-                    today = next_weekday(today, 0)
-                    weekday = 0
-                    week_start = today
-                    week_end = week_start + datetime.timedelta(days=4)
-            else:
-                return await ctx.send("""```
-        Mensa:
-            help         Diese Nachricht
-            <leer>       Speiseplan der aktuellen Woche
-            nextweek     Speiseplan der nächsten Woche
-            heute        Speiseplan von heute
-            nt           Speiseplan in Nürtingen
-            sh           Speiseplan in Mensa Shedhalle
-            sh heute     Heutiger Speiseplan der Mensa Shedhalle
-            sh nw        Speiseplan nächste Woche in der Mensa Shedhalle
+            elif "nt" in subcommands or "nuertingen" in subcommands:
+                # Nuertingen
+                mensa_id = "665"
+            if "help" in subcommands or "h" in subcommands:
+                return await ctx.send(
+        """```Mensa:
+    help                Diese Nachricht
+    <leer>|sh|nt        Speiseplan der aktuellen Woche Morgenstelle | Shedhalle | Nürtingen
+        ╠═ heute         Heutiger Speiseplan
+        ╚═ nextweek      Speiseplan der nächsten Woche
 
-            z.B. !mensa oder !mensa nextweek oder !mensa sh heute
-            Alternativ auch Abkürzungen wie "h" oder "nw"
-        ```""")
+    z.B. !mensa oder !mensa nextweek oder !mensa sh heute
+    Alternativ auch Abkürzungen wie "h" oder "nw"```""")
 
         data = get_data(mensa_id)
         if subcommand and "nt" not in subcommand.lower() or not subcommand:
@@ -173,7 +153,8 @@ class Unibot(commands.Cog):
             return await reply.add_reaction("😵")
 
         # Needed later
-        wochentage = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+        wochentage = ["Montag", "Dienstag", "Mittwoch",
+                      "Donnerstag", "Freitag", "Samstag", "Sonntag"]
         needed_days = []
 
         # Show next week on weekends
@@ -192,33 +173,38 @@ class Unibot(commands.Cog):
         else:
             for day in range(weekday, 5):
                 days_till_end_of_week = 4 - day
-                needed_days.append(today + datetime.timedelta(days=days_till_end_of_week))
+                needed_days.append(
+                    today + datetime.timedelta(days=days_till_end_of_week))
 
         needed_days.reverse()
         canteen = data[mensa_id]["canteen"]
         if (heute_flag):
             embed = discord.Embed(
-            description="{}, am {}".format(canteen, today.strftime("%d.%m.")), color=color)
+                description="{}, am {}".format(canteen, today.strftime("%d.%m.")), color=color)
         else:
             embed = discord.Embed(
-            description="{}, KW {} vom {} bis {}".format(canteen, cal_week, week_start.strftime("%d.%m."),
-                                                                         week_end.strftime("%d.%m.")), color=color)
+                description="{}, KW {} vom {} bis {}".format(canteen, cal_week, week_start.strftime("%d.%m."),
+                                                             week_end.strftime("%d.%m.")), color=color)
         for day in needed_days:
             cur_weekday = day.weekday()
             # Go through all meals (6/day)
             menu_cur_day = build_menu(data[mensa_id]["menus"])
             if data_caf:
                 # Collect data for cafeteria
-                menu_cur_day_caf = build_menu(data_caf[caf_id]["menus"], caf=True)
+                menu_cur_day_caf = build_menu(
+                    data_caf[caf_id]["menus"], caf=True)
                 # Flatten list
-                menu_cur_day_caf = [item for sublist in menu_cur_day_caf for item in sublist]
+                menu_cur_day_caf = [
+                    item for sublist in menu_cur_day_caf for item in sublist]
                 # Append to menu
                 menu_cur_day.append(menu_cur_day_caf)
             # Flatten list
-            menu_cur_day = [item for sublist in menu_cur_day for item in sublist]
+            menu_cur_day = [
+                item for sublist in menu_cur_day for item in sublist]
             if menu_cur_day == []:
                 menu_cur_day = "Keine Daten vorhanden"
-                embed.add_field(name="> **{}**".format(wochentage[cur_weekday]), value=menu_cur_day)
+                embed.add_field(
+                    name="> **{}**".format(wochentage[cur_weekday]), value=menu_cur_day)
             else:
                 # Do emoji mapping here
                 for k, v in emoji_map.items():
