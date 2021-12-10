@@ -13,6 +13,9 @@ class Unibot(commands.Cog):
     @commands.command(pass_context=True, aliases=["Mensa"])
     async def mensa(self, ctx, *, subcommand=None):
 
+        return await ctx.send("\n \n⚠️ ⚠️ ⚠️\n 🇩🇪 Präfix `!` ist veraltet! Bitte nutze ab sofort Slash commands mit Präfix `/` \n \n 🇬🇧 Prefix `!` is deprecated! Please use the slash command with prefix `/` from now on.")
+
+
         def embed_list_lines(embed,
                              lines,
                              field_name,
