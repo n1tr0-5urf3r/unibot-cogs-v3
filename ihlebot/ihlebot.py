@@ -24,12 +24,13 @@ import requests
 from discord.utils import get
 from redbot.core import commands
 
-client = discord.Client()
-
 
 class Ihlebot(commands.Cog):
     """ Command definitions"""
 
+    def __init__(self, bot):
+        self.bot = bot
+    
     def user_is_me(ctx):
         return ctx.message.author.id == "240799236113956864"
 
