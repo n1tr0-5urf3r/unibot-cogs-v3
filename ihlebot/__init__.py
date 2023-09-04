@@ -1,4 +1,4 @@
 from .ihlebot import Ihlebot
 
-def setup(bot):
-    bot.add_cog(Ihlebot())
+async def setup(bot):
+    await bot.add_cog(Ihlebot(bot))
